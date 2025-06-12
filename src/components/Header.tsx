@@ -1,26 +1,22 @@
 
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Search, ShoppingCart, User, Menu, X } from 'lucide-react';
+import { ShoppingCart, User, Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { useCart } from '@/contexts/CartContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { Badge } from '@/components/ui/badge';
+import { ThemeToggle } from './ThemeToggle';
+import SearchDropdown from './SearchDropdown';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
   const { cart } = useCart();
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
-      navigate(`/search?q=${encodeURIComponent(searchQuery)}`);
-      setSearchQuery('');
-    }
+  const handleSearch = (query: string) => {
+    navigate(`/products?search=${encodeURIComponent(query)}`);
   };
 
   const TanzaniteLogo = () => (
@@ -39,7 +35,7 @@ const Header = () => {
   );
 
   return (
-    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b shadow-sm">
+    <header className="sticky top-0 z-50 bg-background/95 backdrop-blur-md border-b shadow-sm">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -48,25 +44,9 @@ const Header = () => {
           </Link>
 
           {/* Search Bar - Desktop */}
-          <form onSubmit={handleSearch} className="hidden md:flex flex-1 max-w-lg mx-8">
-            <div className="relative flex-1">
-              <Input
-                type="text"
-                placeholder="Search products..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pr-10"
-              />
-              <Button 
-                type="submit" 
-                size="sm" 
-                variant="ghost" 
-                className="absolute right-1 top-1/2 transform -translate-y-1/2"
-              >
-                <Search className="h-4 w-4" />
-              </Button>
-            </div>
-          </form>
+          <div className="hidden md:flex flex-1 max-w-lg mx-8">
+            <SearchDropdown onSelect={handleSearch} />
+          </div>
 
           {/* Navigation Links - Desktop */}
           <nav className="hidden md:flex items-center space-x-6">
@@ -79,10 +59,15 @@ const Header = () => {
             <Link to="/about" className="text-foreground hover:text-primary transition-colors">
               About
             </Link>
+            <Link to="/contact" className="text-foreground hover:text-primary transition-colors">
+              Contact
+            </Link>
           </nav>
 
           {/* User Actions */}
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-2">
+            <ThemeToggle />
+            
             {/* Cart */}
             <Link to="/cart" className="relative">
               <Button variant="ghost" size="sm">
@@ -127,25 +112,9 @@ const Header = () => {
         {/* Mobile Menu */}
         {isMenuOpen && (
           <div className="md:hidden py-4 border-t">
-            <form onSubmit={handleSearch} className="mb-4">
-              <div className="relative">
-                <Input
-                  type="text"
-                  placeholder="Search products..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pr-10"
-                />
-                <Button 
-                  type="submit" 
-                  size="sm" 
-                  variant="ghost" 
-                  className="absolute right-1 top-1/2 transform -translate-y-1/2"
-                >
-                  <Search className="h-4 w-4" />
-                </Button>
-              </div>
-            </form>
+            <div className="mb-4">
+              <SearchDropdown onSelect={handleSearch} />
+            </div>
             <nav className="space-y-2">
               <Link 
                 to="/products" 
@@ -167,6 +136,13 @@ const Header = () => {
                 onClick={() => setIsMenuOpen(false)}
               >
                 About
+              </Link>
+              <Link 
+                to="/contact" 
+                className="block py-2 text-foreground hover:text-primary transition-colors"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Contact
               </Link>
             </nav>
           </div>

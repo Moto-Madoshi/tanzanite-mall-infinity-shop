@@ -1,16 +1,19 @@
-
 import React, { useState, useMemo } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-import { products, categories } from '@/data/products';
+import { products, categories, formatTZS } from '@/data/products';
 import { useCart } from '@/contexts/CartContext';
 import { ShoppingCart, Star, Search, Filter } from 'lucide-react';
 
 const Products = () => {
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchParams] = useSearchParams();
+  const initialSearch = searchParams.get('search') || '';
+  
+  const [searchQuery, setSearchQuery] = useState(initialSearch);
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [sortBy, setSortBy] = useState('name');
   const [priceRange, setPriceRange] = useState('all');
@@ -31,7 +34,6 @@ const Products = () => {
       return matchesSearch && matchesCategory && matchesPrice;
     });
 
-    // Sort products
     filtered.sort((a, b) => {
       switch (sortBy) {
         case 'price-low':
@@ -50,7 +52,7 @@ const Products = () => {
   }, [searchQuery, selectedCategory, sortBy, priceRange]);
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-muted/30 py-8">
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="mb-8">
@@ -59,7 +61,7 @@ const Products = () => {
         </div>
 
         {/* Filters */}
-        <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
+        <div className="bg-background rounded-lg shadow-sm p-6 mb-8">
           <div className="flex items-center gap-4 mb-4">
             <Filter className="h-5 w-5 text-muted-foreground" />
             <span className="font-medium">Filters</span>
@@ -99,10 +101,10 @@ const Products = () => {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Prices</SelectItem>
-                <SelectItem value="0-100">Under $100</SelectItem>
-                <SelectItem value="100-500">$100 - $500</SelectItem>
-                <SelectItem value="500-1000">$500 - $1000</SelectItem>
-                <SelectItem value="1000-99999">Over $1000</SelectItem>
+                <SelectItem value="0-100000">Under TZS 100,000</SelectItem>
+                <SelectItem value="100000-500000">TZS 100,000 - 500,000</SelectItem>
+                <SelectItem value="500000-1000000">TZS 500,000 - 1,000,000</SelectItem>
+                <SelectItem value="1000000-99999999">Over TZS 1,000,000</SelectItem>
               </SelectContent>
             </Select>
 
@@ -131,9 +133,9 @@ const Products = () => {
         {/* Products Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {filteredAndSortedProducts.map((product) => (
-            <Card key={product.id} className="group hover:shadow-xl transition-all duration-300">
+            <Card key={product.id} className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
               <CardContent className="p-0">
-                <div className="aspect-square overflow-hidden">
+                <div className="aspect-square overflow-hidden rounded-t-lg">
                   <img 
                     src={product.image} 
                     alt={product.name}
@@ -158,12 +160,13 @@ const Products = () => {
                   </p>
                   <div className="flex items-center justify-between">
                     <span className="text-lg font-bold text-primary">
-                      ${product.price}
+                      {formatTZS(product.price)}
                     </span>
                     <Button 
                       size="sm" 
                       onClick={() => addToCart(product)}
-                      className="bg-gradient-to-r from-tanzanite to-tanzanite-dark hover:from-tanzanite-dark hover:to-tanzanite"
+                      className="bg-gradient-to-r from-tanzanite to-tanzanite-dark hover:from-tanzanite-dark hover:to-tanzanite hover:scale-105 transition-all duration-300"
+                      disabled={!product.inStock}
                     >
                       <ShoppingCart className="h-3 w-3 mr-1" />
                       Add

@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Instagram } from 'lucide-react';
 
 const Footer = () => {
   return (
@@ -43,6 +44,7 @@ const Footer = () => {
               <li><Link to="/category/gaming" className="hover:text-white transition-colors">Gaming</Link></li>
               <li><Link to="/category/drinks" className="hover:text-white transition-colors">Drinks</Link></li>
               <li><Link to="/category/electronics" className="hover:text-white transition-colors">Electronics</Link></li>
+              <li><Link to="/category/genz" className="hover:text-white transition-colors">Gen Z</Link></li>
             </ul>
           </div>
 
@@ -64,15 +66,15 @@ const Footer = () => {
                 rel="noopener noreferrer"
                 className="w-10 h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center hover:from-purple-600 hover:to-pink-600 transition-colors"
               >
-                <span className="text-white font-bold">📷</span>
+                <Instagram className="h-5 w-5 text-white" />
               </a>
               <a 
-                href="https://twitter.com/tanzanitemall" 
+                href="https://x.com/tanzanitemall" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="w-10 h-10 bg-blue-400 rounded-full flex items-center justify-center hover:bg-blue-500 transition-colors"
+                className="w-10 h-10 bg-black rounded-full flex items-center justify-center hover:bg-gray-800 transition-colors"
               >
-                <span className="text-white font-bold">🐦</span>
+                <span className="text-white font-bold text-lg">𝕏</span>
               </a>
               <a 
                 href="https://youtube.com/tanzanitemall" 
