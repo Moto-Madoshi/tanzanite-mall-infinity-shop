@@ -17,6 +17,12 @@ import Cart from "./pages/Cart";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Categories from "./pages/Categories";
+import Computers from "./pages/category/Computers";
+import Gadgets from "./pages/category/Gadgets";
+import Gaming from "./pages/category/Gaming";
+import Drinks from "./pages/category/Drinks";
+import Electronics from "./pages/category/Electronics";
+import GenZ from "./pages/category/GenZ";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -37,6 +43,12 @@ const App = () => (
                     <Route path="/" element={<Home />} />
                     <Route path="/products" element={<Products />} />
                     <Route path="/categories" element={<Categories />} />
+                    <Route path="/category/computers" element={<Computers />} />
+                    <Route path="/category/gadgets" element={<Gadgets />} />
+                    <Route path="/category/gaming" element={<Gaming />} />
+                    <Route path="/category/drinks" element={<Drinks />} />
+                    <Route path="/category/electronics" element={<Electronics />} />
+                    <Route path="/category/genz" element={<GenZ />} />
                     <Route path="/about" element={<About />} />
                     <Route path="/contact" element={<Contact />} />
                     <Route path="/login" element={<Login />} />
