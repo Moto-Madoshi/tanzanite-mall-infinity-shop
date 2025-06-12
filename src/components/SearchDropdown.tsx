@@ -70,9 +70,7 @@ const SearchDropdown: React.FC<SearchDropdownProps> = ({ onSelect, placeholder =
           className="border-0"
         />
         {isOpen && suggestions.length > 0 && (
-          <Comman
-
-dList className="absolute top-full left-0 right-0 z-50 bg-background border border-t-0 rounded-b-lg shadow-lg max-h-60 overflow-y-auto">
+          <CommandList className="absolute top-full left-0 right-0 z-50 bg-background border border-t-0 rounded-b-lg shadow-lg max-h-60 overflow-y-auto">
             <CommandGroup heading="Suggestions">
               {suggestions.map((suggestion, index) => (
                 <CommandItem
