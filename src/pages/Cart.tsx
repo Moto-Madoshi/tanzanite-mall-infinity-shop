@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -8,6 +7,7 @@ import { useCart } from '@/contexts/CartContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { Minus, Plus, Trash2, ShoppingBag } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
+import { formatTZS, calculateVAT, calculateTotalWithVAT } from '@/data/products';
 
 const Cart = () => {
   const { cart, updateQuantity, removeFromCart, clearCart } = useCart();
@@ -88,7 +88,7 @@ const Cart = () => {
                     </div>
                     <div className="text-right">
                       <p className="text-lg font-bold text-primary mb-2">
-                        ${item.price}
+                        {formatTZS(item.price)}
                       </p>
                       <div className="flex items-center gap-2 mb-2">
                         <Button
@@ -124,7 +124,7 @@ const Cart = () => {
               </Card>
             ))}
 
-            <div className="flex justify-between items-center pt-4">
+            <div className="flex justify-between mt-6">
               <Link to="/products">
                 <Button variant="outline">
                   Continue Shopping
@@ -151,7 +151,7 @@ const Cart = () => {
                   {cart.items.map((item) => (
                     <div key={item.id} className="flex justify-between text-sm">
                       <span>{item.name} × {item.quantity}</span>
-                      <span>${(item.price * item.quantity).toFixed(2)}</span>
+                      <span>{formatTZS(item.price * item.quantity)}</span>
                     </div>
                   ))}
                 </div>
@@ -161,23 +161,23 @@ const Cart = () => {
                 <div className="space-y-2">
                   <div className="flex justify-between">
                     <span>Subtotal</span>
-                    <span>${cart.total.toFixed(2)}</span>
+                    <span>{formatTZS(cart.total)}</span>
                   </div>
                   <div className="flex justify-between">
                     <span>Shipping</span>
                     <span>Free</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>Tax</span>
-                    <span>${(cart.total * 0.1).toFixed(2)}</span>
+                    <span>Value Added Tax (VAT) 18%</span>
+                    <span>{formatTZS(calculateVAT(cart.total))}</span>
                   </div>
                 </div>
                 
                 <hr />
                 
-                <div className="flex justify-between text-lg font-bold">
+                <div className="flex justify-between font-bold text-lg">
                   <span>Total</span>
-                  <span>${(cart.total * 1.1).toFixed(2)}</span>
+                  <span>{formatTZS(calculateTotalWithVAT(cart.total))}</span>
                 </div>
 
                 <Button 
